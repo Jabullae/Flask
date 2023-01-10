@@ -1,0 +1,888 @@
+
+=======================================
+ HTML, CSS, JavaScript
+=======================================
+
+# 인터넷, 웹
+
+  - Internet        : https://ko.wikipedia.org/wiki/인터넷
+  - World Wide Web  : https://namu.wiki/w/월드%20와이드%20웹
+  - Hyper Text      : https://en.wikipedia.org/wiki/Hypertext
+  - Markup Language : https://ko.wikipedia.org/wiki/마크업_언어
+  - Web Browser     : https://namu.wiki/w/웹%20브라우저
+
+  - Surface web, Deep web(그 중 일부를 Dark web라 칭함)
+
+    - https://www.hankyung.com/it/article/201907297787i
+
+  - Interspecies Internet
+
+    - https://www.ted.com/talks/the_interspecies_internet_an_idea_in_progress/transcript?language=ko
+    - https://ko.wikipedia.org/wiki/빈트_서프
+
+
+# Web Development Roadmaps
+
+  - https://roadmap.sh/
+  - https://www.w3schools.com/whatis/default.asp
+
+
+# 검색엔진 최적화(SEO) 
+
+  - https://ko.wikipedia.org/wiki/검색_엔진_최적화
+
+
+# 웹마스터 도구
+
+  - 네이버 : https://searchadvisor.naver.com/
+  - 구글   : https://search.google.com/search-console/welcome
+  - 모바일 친화성 테스트 : https://search.google.com/test/mobile-friendly?hl=ko
+
+
+# Learn : HTML, CSS, JavaScript
+
+  ** Atom 설치 + atom-html-preview, emmet 패키지 설치                 <- HTML, CSS 개발 환경
+               + atom-runner 패키지 설치 + node.js 설치               <- JavaScript 개발 환경
+               + atom-beautify, atom-file-icons, minimap 패키지 설치
+
+  ** 자바스크립트 개발 환경과 실행 방법 
+
+     - https://poiemaweb.com/js-hello-world
+     - https://o7planning.org/12173/quickstart-with-ecmascript
+     
+  - HTML
+
+    https://o7planning.org/12059/html 
+    https://www.w3schools.com/html/default.asp
+    https://www.tutorialspoint.com/html/index.htm
+
+    -> HTML Forms 
+
+       https://inpa.tistory.com/entry/HTML-📚-폼Form-태그-정리
+       https://www.nextree.co.kr/p8428
+       https://www.w3schools.com/html/html_forms.asp
+
+  - CSS 
+
+    https://o7planning.org/11829/css
+    https://www.w3schools.com/css/default.asp
+    https://www.tutorialspoint.com/css/index.htm
+
+    -> Free CSS Templates, CSS Layouts & More!
+
+       https://www.free-css.com/
+
+  - ECMAScript/JavaScript 
+
+    https://www.w3schools.com/js/default.asp
+    https://o7planning.org/12171/javascript
+    https://www.tutorialspoint.com/javascript/index.htm
+
+    -> JavaScript HTML DOM
+
+       - https://www.w3schools.com/js/js_htmldom.asp
+       - https://www.tutorialspoint.com/javascript/javascript_html_dom.htm
+
+    -> JS Browser BOM
+
+       - https://www.w3schools.com/js/js_window.asp
+
+    -> Why Should I Learn ES6?
+ 
+       - https://www.w3schools.com/react/react_es6.asp
+       - https://www.w3schools.com/js/js_versions.asp
+       - https://www.w3schools.com/js/js_es5.asp
+       - https://www.w3schools.com/js/js_es6.asp
+       - https://www.w3schools.com/js/js_2016.asp
+       - https://www.w3schools.com/js/js_2017.asp
+       - https://www.w3schools.com/js/js_2018.asp
+       - https://www.w3schools.com/js/js_2019.asp
+
+
+  - jQuery
+
+    https://jquery.com/  ->  https://api.jquery.com/
+    https://www.w3schools.com/jquery/default.asp
+    https://www.tutorialspoint.com/jquery/index.htm
+
+  - AJAX  
+
+    https://www.w3schools.com/js/js_ajax_intro.asp
+    https://www.tutorialspoint.com/ajax/index.htm
+
+    ** 크롬 개발자도구 : Network 활용하기
+
+       https://enfanthoon.tistory.com/164
+
+  - Frontend Framework
+
+    - Bootstrap : https://www.w3schools.com/bootstrap5/index.php
+    - AngularJS : https://www.w3schools.com/angular/default.asp
+    - React     : https://www.w3schools.com/react/default.asp
+    - Vue       : http://www.yes24.com/Product/Goods/101926719
+
+
+# Practice HTML and CSS Skills
+
+  - HTML 연습문제
+    https://velog.io/@layssingcar/HTML-연습문제
+
+  - Top 10 Projects For Beginners To Practice HTML and CSS Skills
+    https://www.geeksforgeeks.org/top-10-projects-for-beginners-to-practice-html-and-css-skills/
+
+  - HTML, CSS 클론코딩
+
+
+# 도서
+
+  - Do it! 인터랙티브 웹 페이지 만들기
+    http://www.easyspub.co.kr/20_Menu/BookView/455/PUB#tab01
+
+  - Do it! 웹 사이트 따라 만들기
+    http://www.easyspub.co.kr/20_Menu/BookView/PUB
+
+  - Eloquent JavaScript 
+    https://eloquentjavascript.net/
+
+
+# Website wireframe
+
+  - https://en.wikipedia.org/wiki/Website_wireframe
+  - https://webdesign.tutsplus.com/ko/articles/a-beginners-guide-to-wireframing--webdesign-7399
+
+
+# Others
+
+  - Single Page Application      : https://ko.wikipedia.org/wiki/싱글_페이지_애플리케이션
+  - Block level vs Inline level  : https://www.w3schools.com/html/html_blocks.asp
+  - Semantic Elements            : https://www.w3schools.com/html/html5_semantic_elements.asp
+  - Eric Meyer's "Reset CSS" 2.0 : https://cssreset.com/scripts/eric-meyer-reset-css/
+  - Default CSS Values           : https://www.w3schools.com/CSSref/css_default_values.asp
+  - url() CSS function           : https://developer.mozilla.org/en-US/docs/Web/CSS/url()
+
+
+# Emmet
+
+  - Emmet                       : https://emmet.io/
+  - Abbreviations Syntax        : https://docs.emmet.io/abbreviations/syntax/
+  - Emmet, zen coding 사용법    : http://osxtip.tistory.com/362
+  - Emmet Cheat Sheet           : https://docs.emmet.io/cheat-sheet/
+  - Build Bootstrap Using Emmet : https://webdesign.tutsplus.com/articles/build-bootstrap-in-minutes-using-emmet--webdesign-14585
+
+    !
+    nav>ul>li
+    div+p+bq
+    div+div>p>span+em^bq
+    div>(header>ul>li*2>a)+footer>p
+    (div>dl>(dt+dd)*3)+footer>p
+    ul>li*5
+    ul>li.sample$*5
+    h$[title=topic$]{Headline $}*3
+    ul>li.items$$$*5
+    ul>li.item$@-*5
+    ul>li.item$@3*5
+    #header
+    .title
+    form#search.wide
+    p.class1.class2.class3
+    p[title="Hello World"]
+    td[rowspan=2 colspan=3 title]
+    [a='value1' b='value2']
+    a{Click me}
+    p>{Click }+a{here}+{ to continue}
+    .class
+    em>.class
+    ul>.class
+    table>.row>.col
+
+    style{.cities{}}
+
+
+==================================================
+ HTML, CSS, JavaScript 수업 진행 순서
+==================================================
+
+  - 다양한 개념 및 용어 이해            : 본 문서 상단
+  - Atom 설치 및 추가 패키지 설치       : 본 문서 상단
+
+  - Introduction to HTML                : https://o7planning.org/12429/introduction-to-html
+  - HTML Editors
+  - Install Atom Editor
+  - Install Atom HTML Preview
+  - Install Atom-Beautify
+  - Starting with HTML                  : https://o7planning.org/12437/starting-with-html
+  - HTML Styles                         : https://o7planning.org/12483/html-style
+
+  - Document Object Model (DOM)         : https://www.w3schools.com/js/js_htmldom.asp
+  - Browser  Object Model (BOM)         : https://www.w3schools.com/js/js_window.asp 
+
+  - Javascript and ECMAScript 소개      : https://o7planning.org/12171/javascript
+  - JavaScript Versions                 : https://www.w3schools.com/js/js_versions.asp
+   
+  - JavaScript Tutorial                 : https://www.w3schools.com/js/default.asp
+  - JavaScript Introduction             : https://www.w3schools.com/js/js_intro.asp
+  - JavaScript Where To                 : https://www.w3schools.com/js/js_whereto.asp
+  - JavaScript Output                   : https://www.w3schools.com/js/js_output.asp
+  - JavaScript Statements               : https://www.w3schools.com/js/js_statements.asp
+  - JavaScript Syntax                   : https://www.w3schools.com/js/js_syntax.asp
+  - JavaScript Comments                 : https://www.w3schools.com/js/js_comments.asp
+  - JavaScript Variables                : https://www.w3schools.com/js/js_variables.asp
+
+  - JavaScript AJAX Introduction        : https://www.w3schools.com/js/js_ajax_intro.asp
+  - JavaScript XMLHttpRequest Object    : https://www.w3schools.com/js/js_ajax_http.asp 
+  - JavaScript XMLHttpRequest           : https://www.w3schools.com/js/js_ajax_http_send.asp
+  - JavaScript Server Response          : https://www.w3schools.com/js/js_ajax_http_response.asp
+  - JavaScript XML Example              : https://www.w3schools.com/js/js_ajax_xmlfile.asp
+  - JavaScript PHP                      : https://www.w3schools.com/js/js_ajax_php.asp
+  - JavaScript ASP                      : https://www.w3schools.com/js/js_ajax_asp.asp
+  - JavaScript Database                 : https://www.w3schools.com/js/js_ajax_database.asp
+  - JavaScript XML Applications         : https://www.w3schools.com/js/js_ajax_applications.asp
+
+    ** JSON 기본(JSONObject, JSONArray) : https://creamilk88.tistory.com/129   -> (1) org.json.JSONObject 활용을 위해 jar 파일 설정, (2) CarDTO 클래스 생성
+    ** JSON 이용 Ajax 통신 1            : https://creamilk88.tistory.com/130   -> price를 pirce로 오타 입력되어 있으므로 callback 함수에서 priceComp.innerHTML = json.price; 코드를 수정할 것
+    ** JSON 이용 Ajax 통신 2            : https://creamilk88.tistory.com/131
+
+
+  - jQuery Tutorial                     : https://www.w3schools.com/jquery/default.asp
+
+    ** 제이쿼리 시작하기 & 예제 코드    : https://creamilk88.tistory.com/132
+    ** 제이쿼리 활용                    : https://creamilk88.tistory.com/133
+    ** jQuery 활용 Ajax                 : https://creamilk88.tistory.com/134
+
+  - jQuery Introduction                 : https://www.w3schools.com/jquery/jquery_intro.asp
+  - jQuery Get Started                  : https://www.w3schools.com/jquery/jquery_get_started.asp
+  - jQuery Syntax                       : https://www.w3schools.com/jquery/jquery_syntax.asp
+  - jQuery Selectors                    : https://www.w3schools.com/jquery/jquery_selectors.asp
+  - jQuery Event Methods                : https://www.w3schools.com/jquery/jquery_events.asp
+  - jQuery API                          : https://api.jquery.com/
+
+    ** Usage statistics of JS libraries : https://w3techs.com/technologies/overview/javascript_library
+
+  - jQuery AJAX Introduction            : https://www.w3schools.com/jquery/jquery_ajax_intro.asp
+  - jQuery AJAX load() Method           : https://www.w3schools.com/jquery/jquery_ajax_load.asp
+  - jQuery get() and post() Methods     : https://www.w3schools.com/jquery/jquery_ajax_get_post.asp
+  - jQuery AJAX Methods                 : https://www.w3schools.com/jquery/jquery_ref_ajax.asp
+
+
+  - Fetch API 
+
+    - https://www.w3schools.com/js/js_callback.asp
+    - https://www.w3schools.com/js/js_asynchronous.asp
+    - https://www.w3schools.com/js/js_promise.asp
+    - https://www.w3schools.com/js/js_async.asp
+    - https://www.daleseo.com/js-window-fetch
+     
+
+# Practic AJAX
+
+  - What are AJAX applications?         : https://www.geeksforgeeks.org/what-are-ajax-applications-in-web-development/
+  - 실시간 아이디 중복 검사             : https://terianp.tistory.com/95
+
+  - Servlet - Ajax 통신하기             : https://tlatmsrud.tistory.com/25
+  - AJAX와 Servlet 활용                 : https://chlee21.tistory.com/158
+  - jQuery를 이용한 AJAX연결과 예제     : https://byul91oh.tistory.com/194
+  - jQuery AJAX example with Servlet    : https://asbnotebook.com/jquery-ajax-example-with-servlet/
+
+  - jQuery AJAX JSP Servlet Example     : https://www.digitalocean.com/community/tutorials/jquery-ajax-jsp-servlet-java-example
+
+  - Insert data using ajax and JSP      : https://www.studentstutorial.com/java-project/insert-data-ajax.php
+  - Fetch  data using ajax and JSP      : https://www.studentstutorial.com/java-project/fetch-data-ajax.php
+
+
+=======================
+ Emmet
+=======================
+
+  - Emmet                       : https://emmet.io/
+  - Abbreviations Syntax        : https://docs.emmet.io/abbreviations/syntax/
+  - Emmet, zen coding 사용법    : http://osxtip.tistory.com/362
+  - Emmet Cheat Sheet           : https://docs.emmet.io/cheat-sheet/
+  - Build Bootstrap Using Emmet : https://webdesign.tutsplus.com/articles/build-bootstrap-in-minutes-using-emmet--webdesign-14585
+
+    !
+    nav>ul>li
+    div+p+bq
+    div+div>p>span+em^bq
+    div>(header>ul>li*2>a)+footer>p
+    (div>dl>(dt+dd)*3)+footer>p
+    ul>li*5
+    ul>li.sample$*5
+    h$[title=topic$]{Headline $}*3
+    ul>li.items$$$*5
+    ul>li.item$@-*5
+    ul>li.item$@3*5
+    #header
+    .title
+    form#search.wide
+    p.class1.class2.class3
+    p[title="Hello World"]
+    td[rowspan=2 colspan=3 title]
+    [a='value1' b='value2']
+    a{Click me}
+    p>{Click }+a{here}+{ to continue}
+    .class
+    em>.class
+    ul>.class
+    table>.row>.col
+
+    style{.cities{}}
+
+
+=======================
+ HTML 
+=======================
+
+# HTML Tutorial
+
+  https://www.w3schools.com/html/default.asp
+
+  - HTML Basic element 
+
+    h${이것은 헤더입니다}*6
+    
+    br
+  
+    hr
+
+    p>lorem       : https://namu.wiki/w/로렘%20입숨 + 레나 포르센 + 유타 주전자
+    b>p>lorem 
+    strong>p>lorem
+    i>p>lorem
+    em>p>lorem
+ 
+    sub, super    : https://www.geeksforgeeks.org/html-subscript-superscript-tags/
+
+  - ol, ul, dl    : https://www.w3schools.com/html/html_lists.asp
+
+    div + css     : https://www.w3schools.com/html/html_blocks.asp
+
+  - img           : srcset 속성 : https://heropy.blog/2019/06/16/html-img-srcset-and-sizes/
+
+    -> 샘플이미지를 간단하게 삽입하기 : https://sapjil.net/placeholder-images/
+
+       - https://placeholder.com/
+       - http://ipsumimage.appspot.com/
+       - http://placeimg.com/
+       - https://picsum.photos/
+
+  - audio, video  
+
+    -> video.js 플러그인 : http://blog.naver.com/dh199606/221150044623 
+
+  - youtube : https://www.w3schools.com/html/html_youtube.asp
+
+  - form
+
+    form>(label+input)*2+input
+    input:t[value]
+
+  - table
+
+    table+
+
+  - meta : https://www.w3schools.com/tags/tag_meta.asp
+
+    -> 네이버 : https://searchadvisor.naver.com/guide/seo-basic-intro
+    -> 구글   : https://support.google.com/webmasters/answer/7451184?hl=ko
+
+  - HTML5 구조 : https://hunit.tistory.com/172
+
+    header>h1{hello world}
+
+    nav>ul>li{menu}*3
+ 
+    section>h1{section}+article>h1{article}
+
+    aside>h1{aside}
+
+    footer>h1{footer}
+
+  - div      : https://www.w3schools.com/tags/tag_div.ASP
+
+  - marquee  : http://www.homejjang.com/05/marquee.php
+
+  - menu     : https://homzzang.com/b/html-129
+
+  - keygen   : https://www.w3schools.com/TAGS/att_keygen_name.asp
+
+  - command  : https://www.w3schools.com/tags/att_command_type.asp
+
+  - figure   : https://aboooks.tistory.com/358
+
+  - picture  : https://www.w3schools.com/tags/tag_picture.asp
+
+  - dialog   : https://developer.mozilla.org/ko/docs/Web/HTML/Element/dialog
+
+  - main     : https://medium.com/@soeunlee/시맨틱하게-html을-짠다는-것-90612ffc988e
+  
+  - template : https://www.w3schools.com/tags/tag_template.asp
+
+  - datagrid : https://www.w3.org/TR/wai-aria-practices/examples/grid/dataGrids.html
+
+  - datalist : https://www.w3schools.com/tags/tag_datalist.asp
+
+  - output   : https://www.w3schools.com/tags/tag_output.asp
+
+  - details  : https://www.w3schools.com/tags/tag_details.asp
+
+
+=======================
+ CSS 
+=======================
+
+# CSS Tutorial
+ 
+  - Introduction : https://www.w3schools.com/css/css_intro.asp
+
+  - Selectors  : https://www.w3schools.com/css/css_selectors.asp 
+               : https://www.w3schools.com/cssref/css_selectors.asp   <- CSS Selector Tester도 확인해 볼 것
+
+    -> id 선택자도 중복 가능하지만 그렇게 하지 않는 것이 관례임
+
+  - Insert CSS : https://www.w3schools.com/css/css_howto.asp
+
+  - Units : https://www.w3schools.com/css/css_units.asp
+
+    -> rem, em, px 사용하는 기준 : https://www.youtube.com/watch?v=S5uMXoGogkk
+
+  - Box Model  : https://www.w3schools.com/css/css_boxmodel.asp
+
+    -> CSS 레이아웃, RWD : https://www.youtube.com/watch?v=Zny5Vxqk6Mk
+
+  - Flexbox         : https://www.w3schools.com/css/css3_flexbox.asp
+  - CSS Grid Layout : https://www.w3schools.com/css/css_grid.asp
+
+    -> CSS Flexbox와 CSS Grid : https://www.youtube.com/watch?v=eprXmC_j9A4
+    -> 모던 레이아웃 - 플렉스박스(Flexbox) : https://webclub.tistory.com/628
+    -> Relationship of grid layout to other layout methods : https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout/Relationship_of_grid_layout
+
+  - Transitions : https://www.w3schools.com/css/css3_transitions.asp
+  - Animations  : https://www.w3schools.com/css/css3_animations.asp
+
+    -> 트랜지션과 애니메이션 : https://www.youtube.com/watch?v=41ffaqFvN7c
+
+
+=======================
+ JavaScript 
+=======================
+
+# Books
+
+  - Do it! 자바스크립트 + 제이쿼리 입문
+    http://easyspub.co.kr/20_Menu/BookView/253
+
+  - Eloquent JavaScript 
+    https://eloquentjavascript.net/
+
+
+# JavaScript Tutorial
+
+  https://www.w3schools.com/js/default.asp       ->  Node.js : https://www.w3schools.com/nodejs/default.asp
+  https://www.w3schools.com/js/js_intro.asp
+  https://www.w3schools.com/js/js_whereto.asp
+  https://www.w3schools.com/js/js_output.asp
+  https://www.w3schools.com/js/js_statements.asp
+  https://www.w3schools.com/js/js_syntax.asp
+  https://www.w3schools.com/js/js_comments.asp
+  https://www.w3schools.com/js/js_variables.asp  -> https://velog.io/@bathingape/JavaScript-var-let-const-차이점
+  ...
+
+
+# JS HTML DOM   
+
+  https://www.w3schools.com/js/js_htmldom.asp
+
+
+# JS Browser BOM
+
+  https://www.w3schools.com/js/js_window.asp
+
+
+# JS Forms
+
+  https://link2me.tistory.com/1415
+  https://dololak.tistory.com/728
+  https://www.javatpoint.com/javascript-form-validation
+  https://www.tutorialspoint.com/javascript/javascript_form_validations.htm
+  https://www.javascripttutorial.net/javascript-dom/javascript-form/
+
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+  https://www.w3schools.com/js/js_validation.asp
+  https://www.w3schools.com/jsref/dom_obj_button.asp  ->  button부터 week까지 확인해 보세요
+
+
+=================================
+ JavaScript 활용 AJAX
+=================================
+
+# 목차
+
+  - AJAX Introduction          : https://www.w3schools.com/js/js_ajax_intro.asp
+  - The XMLHttpRequest Object  : https://www.w3schools.com/js/js_ajax_http.asp
+  - Send a Request To a Server : https://www.w3schools.com/js/js_ajax_http_send.asp
+  - Server Response            : https://www.w3schools.com/js/js_ajax_http_response.asp
+  - XML Example                : https://www.w3schools.com/js/js_ajax_xmlfile.asp
+  - PHP Example                : https://www.w3schools.com/js/js_ajax_php.asp
+  - ASP Example                : https://www.w3schools.com/js/js_ajax_asp.asp
+  - Database Example           : https://www.w3schools.com/js/js_ajax_database.asp
+  - XML Applications           : https://www.w3schools.com/js/js_ajax_applications.asp
+
+  C:\dev> tree /f ajax
+
+  │  app.py
+  │
+  ├─static
+  │  └─data
+  │          ajax_info.txt
+  │          cd_catalog.xml
+  │
+  └─templates
+          ajax01.html
+          ajax02.html
+          ajax03.html
+          ajax04.html
+          index.html
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Practice AJAX</title>
+  <script type="text/javascript">
+    function do_ajax() {
+      var req = new XMLHttpRequest();
+      var result = document.getElementById('result');
+      req.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          result.innerHTML = this.responseText;
+        } else {
+          result.innerHTML = "처리중...";
+        }
+      }
+
+      req.open('POST', '/', true);
+      req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+      req.send("name=" + document.getElementById('name').value);
+    }
+  </script>
+</head>
+
+<body>
+  <form action="/" method="post">
+    <label>Name:<input type="text" id="name" value="" /></label>
+    <button type="button" id="btn-post" onclick="do_ajax();">Click</button>
+    <div id="result"></div>
+  </form>
+</body>
+
+</html>
+
+
+---------------
+> app.py      <
+---------------
+
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def index():
+    if request.method == "POST":
+        name = request.form["name"]
+        return "Hello " + name
+    return render_template("index.html")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+
+
+  C:\dev\ajax> python app.py
+
+
+-------------------
+> ajax01.html     <
+-------------------
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="loadDoc()">클릭하세요</button>
+</div>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>
+
+
+---------------
+> app.py      <
+---------------
+
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def index():
+    if request.method == "POST":
+        name = request.form["name"]
+        return "Hello " + name
+    return render_template("index.html")
+
+
+@app.route("/ajax01", methods=['GET', 'POST'])
+def ajax01():
+    return render_template("ajax01.html")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+
+
+  C:\dev\ajax> python app.py
+
+
+-------------------
+> ajax02.html     <
+-------------------
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #demo {
+      width: 300px;
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <h2>responseXML Property</h2>
+    <button type="button" onclick="loadDoc()">클릭하세요</button>
+    <p id="demo">이곳의 내용이 변경됩니다</p>    
+  </div>
+
+  <script>
+    function loadDoc() {
+      var xhttp, xmlDoc, txt, x, i;
+      xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          xmlDoc = this.responseXML;
+          txt = "";
+          x = xmlDoc.getElementsByTagName("ARTIST");
+          for (i = 0; i < x.length; i++) {
+            txt = txt + x[i].childNodes[0].nodeValue + "<br>";
+          }
+          document.getElementById("demo").innerHTML = txt;
+        }
+      };
+      xhttp.open("GET", "{{ url_for('static', filename='data/cd_catalog.xml') }}", true);
+      xhttp.send();
+    }
+  </script>
+
+</body>
+</html>
+
+
+---------------
+> app.py      <
+---------------
+
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def index():
+    if request.method == "POST":
+        name = request.form["name"]
+        return "Hello " + name
+    return render_template("index.html")
+
+
+@app.route("/ajax01", methods=['GET', 'POST'])
+def ajax01():
+    return render_template("ajax01.html")
+
+
+@app.route("/ajax02", methods=['GET', 'POST'])
+def ajax02():
+    return render_template("ajax02.html")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+
+
+  C:\dev\ajax> python app.py
+
+
+-------------------
+> ajax03.html     <
+-------------------
+
+<!DOCTYPE html>
+<html>
+<style>
+  table,  th,  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th,  td {
+    padding: 5px;
+  }
+</style>
+
+<body>
+
+  <h2>AJAX XML Example</h2>
+
+  <button type="button" onclick="loadDoc()">Get my CD collection</button>
+  <br><br>
+  <table id="demo"></table>
+
+  <script>
+    function loadDoc() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          myFunction(this);
+        }
+      };
+      xhttp.open("GET", "{{ url_for('static', filename='data/cd_catalog.xml') }}", true);
+      xhttp.send();
+    }
+
+    function myFunction(xml) {
+      var i;
+      var xmlDoc = xml.responseXML;
+      var table = "<tr><th>Artist</th><th>Title</th></tr>";
+      var x = xmlDoc.getElementsByTagName("CD");
+      for (i = 0; i < x.length; i++) {
+        table += "<tr><td>" +
+          x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
+          "</td><td>" +
+          x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+          "</td></tr>";
+      }
+      document.getElementById("demo").innerHTML = table;
+    }
+  </script>
+
+</body>
+</html>
+
+
+---------------
+> app.py      <
+---------------
+
+from flask import Flask, request, render_template
+
+app = Flask(__name__)
+
+
+@app.route("/", methods=['GET', 'POST'])
+def index():
+    if request.method == "POST":
+        name = request.form["name"]
+        return "Hello " + name
+    return render_template("index.html")
+
+
+@app.route("/ajax01", methods=['GET', 'POST'])
+def ajax01():
+    return render_template("ajax01.html")
+
+
+@app.route("/ajax02", methods=['GET', 'POST'])
+def ajax02():
+    return render_template("ajax02.html")
+
+
+@app.route("/ajax03", methods=['GET', 'POST'])
+def ajax03():
+    return render_template("ajax03.html")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)
+
+
+  C:\dev\ajax> python app.py
+
+
+=================================
+ jQuery
+=================================
+
+# 목차
+
+  - jQuery Tutorial      : https://www.w3schools.com/jquery/default.asp
+  - jQuery Introduction  : https://www.w3schools.com/jquery/jquery_intro.asp
+  - jQuery Get Started   : https://www.w3schools.com/jquery/jquery_get_started.asp
+  - jQuery Syntax        : https://www.w3schools.com/jquery/jquery_syntax.asp
+  - jQuery Selectors     : https://www.w3schools.com/jquery/jquery_selectors.asp
+  - jQuery Event Methods : https://www.w3schools.com/jquery/jquery_events.asp
+
+# jQuery vs JavaScript
+
+  - JavaScript/jQuery DOM Selectors : https://www.w3schools.com/js/js_jquery_selectors.asp
+  - JavaScript/jQuery HTML Elements : https://www.w3schools.com/js/js_jquery_elements.asp
+  - JavaScript/jQuery CSS Styles    : https://www.w3schools.com/js/js_jquery_css.asp
+  - JavaScript/jQuery HTML DOM      : https://www.w3schools.com/js/js_jquery_dom.asp
+
+
+=================================
+ jQuery 활용 AJAX
+=================================
+
+# jQuery AJAX 
+
+  - jQuery AJAX Introduction             : https://www.w3schools.com/jquery/jquery_ajax_intro.asp
+  - jQuery AJAX load() Method            : https://www.w3schools.com/jquery/jquery_ajax_load.asp
+  - jQuery AJAX get() and post() Methods : https://www.w3schools.com/jquery/jquery_ajax_get_post.asp
+
+
+
+
+
+
+
+
+
+
+
+
+
+

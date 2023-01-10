@@ -1,0 +1,1539 @@
+﻿
+#######################################
+#
+# Crawling + Flask  
+#
+#######################################
+
+# 브라우저 캐시 리로딩 : Ctrl + Shift + R 
+
+================================
+ 프로젝트 생성 및 세팅
+================================
+
+  c:\dev> tree /F Flask4Crawling
+
+  Flask4Crawling
+  │  app.py
+  │
+  ├─static
+  └─templates
+          index.html
+
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+
+  <div>
+    <h1> My Home Page </h1>
+  </div>
+
+</body>
+
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return render_template("index.html")
+
+
+@app.route('/about')
+def about():
+    return "About Our Service"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+ c:\dev\Flask4Crawling> python app.py
+
+
+===============================================
+ 네이버 날씨 크롤링 결과로 html 파일 만들기
+===============================================
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Home Page</title>
+</head>
+<body>
+  <ul>
+    {% for i in list %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>  
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+import requests
+from bs4 import BeautifulSoup
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def naver_weather():
+    html = requests.get('https://search.naver.com/search.naver?query=날씨')
+    soup = BeautifulSoup(html.text, 'html.parser')
+
+    find_address     = '현재 위치 : '      + soup.find('h2', class_='blind').text  
+    find_currenttemp = '현재 온도: '       + soup.select_one('div.temperature_text > strong').text
+    find_dust        = '현재 미세먼지: '   + soup.select('dd span.num')[0].text
+    find_ultra_dust  = '현재 초미세먼지: ' + soup.select('dd span.num')[1].text
+    find_ozone       = '현재 오존지수: '   + soup.select('dd span.num')[2].text
+
+    myList = [find_address, find_currenttemp,
+              find_dust, find_ultra_dust, find_ozone]
+
+    return render_template("index.html", list=myList)
+
+
+@app.route('/about')
+def about():
+    return "About Our Service"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+ c:\dev\Flask4Crawling> python app.py
+
+
+===============================================
+ CSS 설정
+===============================================
+
+  c:\dev> tree /F Flask4Crawling
+
+  Web.
+  │  app.py
+  │
+  ├─static
+  │      style.css   <- 추가하세요
+  │
+  └─templates
+          index.html
+
+
+------------------
+> style.css      <
+------------------
+
+.naver_weather {
+  padding: 20px;
+  border: 10px solid blue;
+  border-radius: 50px;
+}
+
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>My Home Page</title>
+</head>
+<body>
+  <div class="naver_weather">
+  <ul>
+    {% for i in list %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>  
+  </div>
+</body>
+</html>
+    
+
+  c:\dev\Flask4Crawling> python app.py
+
+
+===============================================
+  app.py 모듈의 함수를 다른 모듈로 분리하기
+===============================================
+
+  c:\dev> tree /F Flask4Crawling
+
+  Web.
+  │  app.py
+  │  crawling.py     <- 추가하세요
+  │
+  ├─static
+  │      style.css
+  │
+  └─templates
+          index.html
+
+
+-------------------
+> crawling.py     <
+-------------------
+
+import requests
+from bs4 import BeautifulSoup
+
+
+def naver_weather():
+    html = requests.get('https://search.naver.com/search.naver?query=날씨')
+    soup = BeautifulSoup(html.text, 'html.parser')
+
+    find_address     = '현재 위치 : '      + soup.find('h2', class_='blind').text  
+    find_currenttemp = '현재 온도: '       + soup.select_one('div.temperature_text > strong').text
+    find_dust        = '현재 미세먼지: '   + soup.select('dd span.num')[0].text
+    find_ultra_dust  = '현재 초미세먼지: ' + soup.select('dd span.num')[1].text
+    find_ozone       = '현재 오존지수: '   + soup.select('dd span.num')[2].text
+
+    myList = [find_address, find_currenttemp,
+              find_dust, find_ultra_dust, find_ozone]
+              
+    return myList
+
+
+if __name__ == '__main__':
+    print(naver_weather())
+
+
+  c:\dev\Flask4Crawling> python crawling.py
+
+
+--------------
+> app.py     <
+--------------
+
+from flask import Flask, render_template
+import crawling
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    naver_weather = crawling.naver_weather()
+    return render_template("index.html", list=naver_weather)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+    
+    
+  c:\dev\Flask4Crawling> python app.py
+
+
+===============================================
+  다른 페이지 크롤링
+===============================================
+
+-------------------
+> index.html      <
+-------------------
+
+# list1, list2, list3 변수 사용
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  
+  <title>My Home Page</title>
+</head>
+<body>
+  <div class='naver_weather'>
+  <h1>지역 날씨</h1>
+  <ul>
+    {% for i in list1 %}       
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>  
+  </div>
+
+  <div class='naver_weather'>
+  <h1>오늘의 유머 베오베</h1>
+  <ul>
+    {% for i in list2 %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>  
+  </div>
+
+  <div class='naver_weather'>
+  <h1>클리앙</h1>
+  <ul>
+    {% for i in list3 %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>  
+  </div>
+
+</body>
+</html>
+
+
+-------------------
+> crawling.py     <
+-------------------
+
+import requests
+from bs4 import BeautifulSoup
+
+def naver_weather():
+    html = requests.get('https://search.naver.com/search.naver?query=날씨')
+    soup = BeautifulSoup(html.text, 'html.parser')
+
+    find_address     = '현재 위치 : '      + soup.find('h2', class_='blind').text  
+    find_currenttemp = '현재 온도: '       + soup.select_one('div.temperature_text > strong').text
+    find_dust        = '현재 미세먼지: '   + soup.select('dd span.num')[0].text
+    find_ultra_dust  = '현재 초미세먼지: ' + soup.select('dd span.num')[1].text
+    find_ozone       = '현재 오존지수: '   + soup.select('dd span.num')[2].text
+
+    myList = [find_address, find_currenttemp,
+              find_dust, find_ultra_dust, find_ozone]
+              
+    return myList
+    
+
+def today_humor() :
+    resp = requests.get('http://www.todayhumor.co.kr/board/list.php?table=bestofbest')
+    soup = BeautifulSoup(resp.text, 'html.parser')
+
+    myList = []
+
+    for i in soup.find_all("td", class_="subject"):
+        myList.append(i.text)
+
+    return myList
+
+
+def clien():
+    resp = requests.get('https://www.clien.net/service/recommend')
+    soup = BeautifulSoup(resp.text, 'html.parser')
+
+    myList = []
+
+    for i in soup.find_all("span", class_="subject_fixed") :
+        myList.append(i.text)
+
+    return myList
+    
+    
+if __name__ == '__main__':
+    print(naver_weather())
+    print(today_humor())
+    print(clien())
+
+
+  c:\dev\Flask4Crawling> python crawling.py
+
+
+--------------
+> app.py     <
+--------------
+
+from flask import Flask, render_template
+import crawling
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    naver_weather = crawling.naver_weather()
+    todayhumor    = crawling.today_humor()
+    clien         = crawling.clien()
+
+    return render_template("index.html", list1=naver_weather, list2=todayhumor, list3=clien)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+  c:\dev\Flask4Crawling> python app.py
+
+
+===============================================
+ 하이퍼 링크 설정
+===============================================
+
+-------------------
+> crawling.py     <
+-------------------
+
+import requests
+from bs4 import BeautifulSoup
+
+def naver_weather():
+    html = requests.get('https://search.naver.com/search.naver?query=날씨')
+    soup = BeautifulSoup(html.text, 'html.parser')
+
+    find_address     = '현재 위치 : '      + soup.find('h2', class_='blind').text  
+    find_currenttemp = '현재 온도: '       + soup.select_one('div.temperature_text > strong').text
+    find_dust        = '현재 미세먼지: '   + soup.select('dd span.num')[0].text
+    find_ultra_dust  = '현재 초미세먼지: ' + soup.select('dd span.num')[1].text
+    find_ozone       = '현재 오존지수: '   + soup.select('dd span.num')[2].text
+
+    myList = [find_address, find_currenttemp,
+              find_dust, find_ultra_dust, find_ozone]
+              
+    return myList
+
+
+
+def today_humor() :
+    resp = requests.get('http://www.todayhumor.co.kr/board/list.php?table=bestofbest')
+    soup = BeautifulSoup(resp.text, 'html.parser')
+
+    myList = []
+    myList_href = []	
+
+    for i in soup.find_all("td", class_="subject"):
+        myList.append(i.text)
+        myList_href.append("http://www.todayhumor.co.kr/" + i.find("a")["href"])
+
+    return myList, myList_href
+    
+
+def clien():
+    resp = requests.get('https://www.clien.net/service/recommend')
+    soup = BeautifulSoup(resp.text, 'html.parser')
+
+    myList = []
+    myList_href = []
+
+    for i in soup.find_all("span", class_="subject_fixed") :
+        myList.append(i.text)
+
+    for i in soup.find_all("a", class_="list_subject") :
+        myList_href.append("https://www.clien.net/" + i["href"])
+
+    return myList, myList_href
+   
+    
+if __name__ == '__main__':
+    print(naver_weather())
+    print(today_humor())
+    print(clien())
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template
+import crawling
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    naver_weather = crawling.naver_weather()
+    today_humor, todayhumor_href = crawling.today_humor()
+    clien, clien_href = crawling.clien()
+
+    return render_template("index.html",
+                           list1 = naver_weather,
+                           list2 = today_humor, list2_href = todayhumor_href, list2_len = len(today_humor),
+                           list3 = clien, list3_href = clien_href, list3_len = len(clien))
+                           
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <div class="naver_weather">
+    <h1>지역 날씨입니다</h1>
+    <ul>
+      {% for i in list1 %}
+      <li>{{i}}</li>
+      {% endfor %}
+    </ul>
+  </div><br>
+
+  <div class="naver_weather">
+    <h1>오늘의 유머</h1>
+    <ul>
+      {% for i in range(0, list2_len) %}
+      <a href={{list2_href[i]}}>
+        <li>{{list2[i]}}</li>
+      </a>
+      {% endfor %}
+    </ul>
+  </div><br>
+
+  <div class="naver_weather">
+    <h1>클리앙</h1>
+    <ul>
+      {% for i in range(0, list3_len) %}
+      <a href={{list3_href[i]}}>
+        <li>{{list3[i]}}</li>
+      </a>
+      {% endfor %}
+    </ul>
+  </div>
+
+</body>
+
+</html>
+
+
+===============================================
+ 두번째 프로젝트
+===============================================
+
+  c:\dev> tree /F Flask4Crawling2
+
+  Flask4Crawling2
+  │  app.py
+  │
+  ├─static
+  │      index.css
+  │
+  └─templates
+          index.html
+
+
+===============================================
+ Bootstrap 설정
+===============================================
+
+# Bootstrap
+
+  https://getbootstrap.com/
+  https://www.w3schools.com/bootstrap4/
+
+-------------------
+> index.html      <
+-------------------
+
+<!-- Bootstrap 3 코드입니다-> Bootstrap 4로 수정하세요
+https://www.w3schools.com/bootstrap4/bootstrap_forms.asp -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div id="wrap">
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">이메일 주소</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="이메일을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">암호</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="암호">
+      </div>
+      <button type="submit" class="btn btn-default">제출</button>
+    </form>
+  </div>
+</body>
+
+</html>
+
+
+------------------
+> index.css      <
+------------------
+
+#wrap {
+  width: 300px;
+  margin: auto;
+}
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+
+if __name__ == '__main__':
+    app.run()
+
+
+===============================================
+ 크롤링 요청 페이지 작성
+===============================================
+
+  c:\dev> tree /F Flask4Crawling2
+
+  Web.
+  │  app.py
+  │
+  ├─static
+  │      index.css
+  │
+  └─templates
+          index.html
+          result.html    <- 추가하세요
+
+
+# 웹 페이지 디자인
+
+  키워드 입력: _________________________
+
+  페이지 입력: _________________________ 
+
+  제출버튼
+
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> 
+  <title>Document</title>
+</head>
+<body>
+  
+  <div id="wrap">
+    <h2>Form Grid</h2>
+    <p>Create two form elements that appear side by side with .row and .col:</p>
+    <form action="/result" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="키워드 입력"     name="input1">
+          <input type="number" class="form-control" placeholder="페이지수 설정" name="input2">
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
+    </form>
+  </div>    
+
+</body>  
+</html>
+
+
+----------------
+> index.css    <
+----------------
+
+#wrap {
+  width: 600px;
+  margin: auto;
+}
+
+
+-------------------
+> result.html     <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <p>결과 페이지입니다</p>
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        print(keyword)
+        print(page)
+
+        return render_template('result.html')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+===============================================
+ Page 숫자 설정
+===============================================
+
+-------------------
+> result.html     <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <ul>
+    {% for i in daum_list %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+import requests
+from bs4 import BeautifulSoup
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        daum_news_list = []
+
+        for i in range(1, int(page)+1):
+            resp = requests.get('https://search.daum.net/search?&w=news&q=' + keyword + '&p=' + str(i))
+            soup = BeautifulSoup(resp.text, 'html.parser')
+
+            for i in soup.find_all("a", class_="tit_main"):
+                daum_news_list.append(i.text)
+
+        return render_template('result.html',  daum_list=daum_news_list)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+===============================================
+ 엑셀 파일로 데이터 저장
+===============================================
+
+*** 도전 과제 : 뉴스 기사에 하이퍼링크 붙이기 ***
+
+-------------------
+> result.html     <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <ul>
+    {% for i in daum_list %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>
+
+  <ul>
+    <li><a href="static/result.xlsx">검색 결과 엑셀 파일로 다운로드</a></li>
+  </ul>
+
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
+import requests
+from openpyxl import Workbook
+
+app = Flask(__name__)
+
+write_wb = Workbook()
+write_ws = write_wb.active
+
+
+@app.route('/')
+def hello_world():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        daum_news_list = []
+
+        for i in range(1, int(page)+1):
+            resp = requests.get('https://search.daum.net/search?&w=news&q=' + keyword + '&p=' + str(i))
+            soup = BeautifulSoup(resp.text, 'html.parser')
+
+            for i in soup.find_all("a", class_="tit_main"):
+                daum_news_list.append(i.text)
+
+        for i in range(1, len(daum_news_list) + 1):
+            # sheet.cell(row = 1, column = 1, value='wolrd') 
+            write_ws.cell(i, 1, daum_news_list[i - 1])
+
+        write_wb.save('static/result.xlsx')
+
+        return render_template('result.html', daum_list = daum_news_list)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+===============================================
+ 셀레니움을 활용해서 크롤링
+===============================================
+
+  c:\dev> tree /F Flask4Crawling2
+
+
+  Web.
+  │  app.py
+  │
+  ├─static
+  │      index.css
+  │
+  └─templates
+          index.html
+          shopping_results.html   <- 추가하세요
+          result.html
+
+
+-------------------
+> index.html      <
+-------------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="wrap">
+    <div class="news">
+      <h3>다음 뉴스</h3>
+      <p>키워드와 페이지수를 설정하고 확인 버튼 클릭하세요</p>
+      <form action="/result" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="키워드 입력" name="input1">
+          <input type="number" class="form-control" placeholder="페이지수 설정" name="input2">
+          <button type="submit" class="btn btn-primary mt-3">확인</button>
+        </div>
+      </form>
+    </div><br>
+
+    <div class="naver">
+      <h3>네이버 쇼핑</h3>
+      <p>쇼핑할 물품을 입력하세요</p>
+      <form action="/shopping_results" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" name="input3">
+          <button type="submit" class="btn btn-primary mt-3">확인</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>
+
+
+-------------------
+> index.css       <
+-------------------
+
+#wrap {
+  width: 600px;
+  margin: auto;
+}
+
+.news {
+  margin-top: 30px;
+}
+
+.naver {
+  margin-top: 30px;
+}
+
+
+---------------------------
+> shopping_results.html     <
+---------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <ul>
+    {% for i in search_list %}
+    <li>{{ i }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
+import requests
+from openpyxl import Workbook
+from selenium import webdriver
+
+
+app = Flask(__name__)
+
+write_wb = Workbook()
+write_ws = write_wb.active
+
+
+@app.route('/')
+def hello_world():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        daum_news_list = []
+
+        for i in range(1, int(page)+1):
+            resp = requests.get('https://search.daum.net/search?&w=news&q=' + keyword + '&p=' + str(i))
+            soup = BeautifulSoup(resp.text, 'html.parser')
+
+            for i in soup.find_all("a", class_="f_link_b"):
+                daum_news_list.append(i.text)
+
+        for i in range(1, len(daum_news_list) + 1):
+            # sheet.cell(row = 1, column = 1, value='wolrd') 
+            write_ws.cell(i, 1, daum_news_list[i - 1])
+
+        write_wb.save('static/result.xlsx')
+
+        return render_template('result.html', daum_list = daum_news_list)
+
+
+# @app.route('/shopping_results')
+# def naver_shopping():
+#     driver = webdriver.Chrome()
+#     driver.implicitly_wait(3)
+#     driver.get( "https://search.shopping.naver.com/search/all_search.nhn?query=과일"
+#     soup = BeautifulSoup(driver.page_source, 'html.parser')
+#     print(soup)
+#     return render_template('shopping_results.html')
+
+@app.route('/shopping_results', methods=['POST'])
+def naver_shopping():
+    search = request.form['input3']
+
+    search_list = []
+    
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(3)
+
+    driver.get("https://search.shopping.naver.com/search/all_search.nhn?query=" + search)
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    for i in soup.select("li._itemSection"):       
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.find_element_by_class_name("_productSet_hotdeal").click()
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    for i in soup.select("li._itemSection"):
+         search_list.append(i.find("a", class_="link").text)
+         
+    driver.find_element_by_class_name("_productSet_overseas").click()
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    for i in soup.select("div.search_list.basis > ul > li"):
+        search_list.append(i.find("a", class_="link").text)
+
+    return render_template('shopping_results.html', search_list = search_list)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+    
+
+========================================================
+ 셀레니움으로 스크롤 다운한 뒤 이미지 주소 크롤링
+========================================================
+
+** 참고 예제
+
+   selenium 크롤링 - 무한 스크롤, 클릭
+   https://velog.io/@devmin/selenium-crawling-infinite-scroll-click
+
+** execute_script(script, *args)
+
+   https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver.execute_script
+
+** Window scrollTo() Method
+
+   https://www.w3schools.com/jsref/met_win_scrollto.asp
+
+   cf.JavaScript - The Browser Object Model
+
+      https://www.w3schools.com/js/js_window.asp
+
+
+----------------------------
+> shopping_results.html    <
+----------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <ul>
+    {% for i in range(0, len) %}
+    <li><img src={{ search_list_src[i] }}></li>
+    <li>{{ search_list[i] }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+
+
+-------------------
+> app.py          <
+-------------------
+
+from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
+import requests
+from openpyxl import Workbook
+from selenium import webdriver
+
+
+app = Flask(__name__)
+
+write_wb = Workbook()
+write_ws = write_wb.active
+
+
+@app.route('/')
+def hello_world():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        daum_news_list = []
+
+        for i in range(1, int(page)+1):
+            resp = requests.get('https://search.daum.net/search?&w=news&q=' + keyword + '&p=' + str(i))
+            soup = BeautifulSoup(resp.text, 'html.parser')
+
+            for i in soup.find_all("a", class_="f_link_b"):
+                daum_news_list.append(i.text)
+
+        for i in range(1, len(daum_news_list) + 1):
+            # sheet.cell(row = 1, column = 1, value='wolrd') 
+            write_ws.cell(i, 1, daum_news_list[i - 1])
+
+        write_wb.save('static/result.xlsx')
+
+        return render_template('result.html', daum_list = daum_news_list)
+
+
+@app.route('/shopping_results', methods=['POST'])
+def naver_shopping():        
+    search  = request.form['input3']
+    search_list = []
+    search_list_src = []
+
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(3)
+
+    driver.get("https://search.shopping.naver.com/search/all_search.nhn?query=" + search)
+
+    import time 
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("li._itemSection") :
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.find_element_by_class_name("_productSet_hotdeal").click()
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("li._itemSection"):
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.find_element_by_class_name("_productSet_overseas").click()
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("li._itemSection"):
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.close()
+
+    return render_template('shopping_results.html',
+                           search_list = search_list,
+                           search_list_src = search_list_src,
+                           len = len(search_list))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+=====================================================
+ 네이버 이미지 검색 결과 다운로드
+=====================================================
+
+  c:\dev> tree /F Flask4Crawling2
+
+  Web.
+  │  app.py
+  │
+  ├─images
+  │      image_crawling.py       <- 추가하세요
+  │
+  ├─static
+  │      index.css
+  │
+  └─templates
+          index.html
+          shopping_results.html 
+          result.html
+
+-----------------------
+> image_crawling.py   <
+-----------------------
+
+import requests
+from bs4 import BeautifulSoup
+
+base_url  = 'https://search.naver.com/search.naver?where=image&query='
+input_url = input('원하는 검색어를 입력하세요: ')
+url = base_url + input_url
+
+resp = requests.get(url)
+
+soup = BeautifulSoup(resp.text, 'html.parser')
+imgs = soup.find_all('img', class_='_img')
+
+no = 1
+
+for img in imgs:
+    img_url = img['data-source']
+    img_resp = requests.get(img_url)
+    f = open(input_url + str(no) + '.jpg', 'wb')
+    f.write(img_resp.content)
+    f.close()
+    no += 1
+    
+
+=====================================================
+ 플라스크에서 네이버 이미지 검색 결과 다운로드 
+=====================================================
+
+  c:\dev> tree /F Flask4Crawling2
+
+
+  Web.
+  │  app.py
+  │
+  ├─images
+  │      image_crawling.py
+  │
+  ├─static
+  │      index.css
+  │
+  └─templates
+          index.html
+          shopping_results.html 
+          result.html
+
+
+----------------
+> index.html   <
+----------------
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="wrap">
+    <div class="news">
+      <h3>다음 뉴스</h3>
+      <p>키워드와 페이지수를 설정하고 확인 버튼 클릭하세요</p>
+      <form action="/result" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="키워드 입력" name="input1">
+          <input type="number" class="form-control" placeholder="페이지수 설정" name="input2">
+          <button type="submit" class="btn btn-primary mt-3">확인</button>
+        </div>
+      </form>
+    </div><br>
+
+    <div class="naver">
+      <h3>네이버 쇼핑</h3>
+      <p>쇼핑할 물품을 입력하세요</p>
+      <form action="/shopping_results" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" name="input3">
+          <button type="submit" class="btn btn-primary mt-3">확인</button>
+        </div>
+      </form>
+    </div><br>
+
+    <div class="images">
+      <h3>이미지 검색</h3>
+      <p>검색어를 입력하세요</p>
+      <form action="/image_results" method="POST">
+        <div class="col">
+          <input type="text" class="form-control" name="input4">
+          <button type="submit" class="btn btn-primary mt-3">확인</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>
+
+
+----------------
+> index.css    <
+----------------
+
+#wrap {
+  width: 600px;
+  margin: auto;
+}
+
+.news {
+  margin-top: 30px;
+}
+
+.naver {
+  margin-top: 30px;
+}
+
+.images {
+  margin-top: 30px;
+}
+
+
+-------------------------
+> image_results.html    <
+-------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <p>검색 및 저장 완료</p>
+</body>
+</html>
+
+
+--------------
+> app.py     <
+--------------
+
+from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
+import requests
+from openpyxl import Workbook
+from selenium import webdriver
+
+
+app = Flask(__name__)
+
+write_wb = Workbook()
+write_ws = write_wb.active
+
+
+@app.route('/')
+def hello_world():
+    return render_template("index.html")
+
+
+@app.route('/result', methods=['POST'])
+def result():
+    if request.method == 'POST':
+
+        keyword = request.form['input1']
+        page    = request.form['input2']
+
+        daum_news_list = []
+
+        for i in range(1, int(page)+1):
+            resp = requests.get('https://search.daum.net/search?&w=news&q=' + keyword + '&p=' + str(i))
+            soup = BeautifulSoup(resp.text, 'html.parser')
+
+            for i in soup.find_all("a", class_="f_link_b"):
+                daum_news_list.append(i.text)
+
+        for i in range(1, len(daum_news_list) + 1):
+            # sheet.cell(row = 1, column = 1, value='wolrd') 
+            write_ws.cell(i, 1, daum_news_list[i - 1])
+
+        write_wb.save('static/result.xlsx')
+
+        return render_template('result.html', daum_list = daum_news_list)
+
+
+@app.route('/shopping_results', methods=['POST'])
+def naver_shopping():        
+    search  = request.form['input3']
+    search_list = []
+    search_list_src = []
+
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(3)
+
+    driver.get("https://search.shopping.naver.com/search/all_search.nhn?query=" + search)
+
+    import time 
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("div.search_list.basis > ul > li") :
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.find_element_by_class_name("_productSet_hotdeal").click()
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("div.search_list.basis > ul > li"):
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.find_element_by_class_name("_productSet_overseas").click()
+
+    y = 1000
+    for timer in range(0, 10):
+        driver.execute_script("window.scrollTo(0, " + str(y) + ")")
+        y += 1000
+        time.sleep(1)
+
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    for i in soup.select("div.search_list.basis > ul > li"):
+        search_list_src.append(i.find("img", class_="_productLazyImg")["src"])
+        search_list.append(i.find("a", class_="link").text)
+
+    driver.close()
+
+    return render_template('shopping_results.html',
+                           search_list = search_list,
+                           search_list_src = search_list_src,
+                           len = len(search_list))
+
+@app.route('/image_results', methods=['POST'])
+def image_results():        
+    input_url = request.form['input4']
+    base_url  = 'https://search.naver.com/search.naver?where=image&query='
+    url = base_url + input_url
+
+    resp = requests.get(url)
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    imgs = soup.find_all('img', class_='_img')
+
+    no = 1
+
+    import os
+    os.chdir('./images/')
+
+    for img in imgs:
+        img_url = img['data-source']
+        img_resp = requests.get(img_url)
+        f = open(input_url + str(no) + '.jpg', 'wb')
+        f.write(img_resp.content)
+        f.close()
+        no += 1 
+        
+    return render_template('image_results.html')
+    
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+
+
+

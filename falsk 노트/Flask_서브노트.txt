@@ -1,0 +1,1915 @@
+﻿
+################################
+#
+# Flask 웹 프레임워크 
+#
+################################
+
+# Prerequisite
+
+  - Front-end 이해
+
+    -> https://www.w3schools.com/whatis/default.asp
+    -> HTML,CSS,JavaScript_서브노트.txt
+
+
+# 브라우저 캐시 리로딩
+
+  Ctrl + Shift + R 
+
+
+====================
+ Flask 소개
+====================
+
+  - 플라스크 (웹 프레임워크)
+
+    https://ko.wikipedia.org/wiki/플라스크_(웹_프레임워크)
+
+    -> 핀터레스트, 링크드인, ...
+
+    https://flask.palletsprojects.com/en/2.0.x/foreword/#what-does-micro-mean
+
+    https://www.tutorialspoint.com/flask/flask_overview.htm
+
+  - 참고
+
+    -> 점프 투 플라스크 : https://wikidocs.net/book/4542
+    -> 점프 투 장고     : https://wikidocs.net/book/4223
+
+
+# 아래와 같이 폴더 및 파일 생성
+
+  C:\dev> tree FlaskIntro /F
+
+    FLASKINTRO      <- 폴더(원하는 이름)
+    │  app.py      <- 파일(원하는 이름)
+    │
+    ├─static      <- 폴더(이렇게 하세요)
+    └─templates   <- 폴더(이렇게 하세요)
+
+
+=================================
+ 웹 애플리케이션 생성
+=================================
+
+# API 확인
+
+  class flask.Flask(import_name, 
+                    static_folder='static', 
+                    template_folder='templates', ...)
+
+  -> https://flask.palletsprojects.com/en/2.0.x/api/#application-object
+
+     - Application Object
+     - About the First Parameter
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
+if __name__ == '__main__':
+    # https://flask.palletsprojects.com/en/2.0.x/api/#flask.Flask.run
+    # https://snacky.tistory.com/9
+    app.run()  
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+======================
+ Routing
+======================
+
+# API 확인
+
+  - flask.Flask.route() decorator
+  - flask.Flask.add_url_rule() function
+  - flask.Flask.url_map
+
+  -> https://flask.palletsprojects.com/en/2.0.x/api/#url-route-registrations
+
+-----------------
+> app.py        <
+-----------------
+
+from datetime import date, timedelta
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
+@app.route('/today/')  # /today 및 /today/로 접근 가능
+def today():
+    return f'오늘은 {date.today()}입니다.'
+
+
+def add7days():
+    return f'일주일 뒤는 {date.today() + timedelta(days=7)}입니다.'
+
+app.add_url_rule('/7dayslater/',  # rule      : the URL rule as string
+                 '',              # endpoint  : the endpoint for the registered URL rule. Flask itself assumes the name of the view function as endpoint
+                  add7days)       # view_func : the function to call when serving a request to the provided endpoint
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+======================
+ Variable Rules
+======================
+
+# API 확인
+
+  https://flask.palletsprojects.com/en/2.0.x/quickstart/#variable-rules
+
+-----------------
+> app.py        <
+-----------------
+
+# https://markupsafe.palletsprojects.com/en/2.0.x/
+from markupsafe import escape
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
+@app.route('/user/<username>/')
+def show_user_profile(username):
+    # show the user profile for that user
+    return 'User %s' % username
+
+
+@app.route('/post/<int:post_id>/')
+def show_post(post_id):
+    # show the post with the given id, the id is an integer
+    return 'Post %d' % post_id
+
+
+@app.route('/path/<path:subpath>/')
+def show_subpath(subpath):
+    # show the subpath after /path/
+    return 'Subpath %s' % escape(subpath)   # http://localhost:5000/path/lookup/<br> 입력으로 escape 함수 효과 확인!
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+==========================
+ URL Building(URL 빌딩)
+==========================
+
+# API 확인
+
+  - url_for(함수이름[, URL변수, ...]) function
+
+  -> https://www.tutorialspoint.com/flask/flask_url_building.htm
+  -> https://flask.palletsprojects.com/en/2.0.x/quickstart/#url-building
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, redirect, url_for
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
+@app.route('/admin')
+def hello_admin():
+    return 'Hello Admin'
+
+
+@app.route('/guest/<guest>')
+def hello_guest(guest):
+    return 'Hello %s as Guest' % guest
+
+
+@app.route('/user/<name>')
+def hello_user(name):
+    if name == 'admin':
+        return redirect(url_for('hello_admin'))
+    else:
+        return redirect(url_for('hello_guest', guest=name))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+==========================
+ HTTP methods
+==========================
+
+# Http의 정의, 메소드, 메세지 형식
+
+  https://velog.io/@rosewwross/Http-and-Request-and-Response-hok6exbnfb
+
+
+# API 확인
+
+  https://www.tutorialspoint.com/flask/flask_http_methods.htm
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │
+    ├─static
+    └─templates
+            login.html  <- 추가하세요
+
+-----------------
+> login.html    <
+-----------------
+
+<html>
+   <body>
+      <form action = "http://localhost:5000/auth" method = "post">
+         <p>Enter Name:</p>
+         <p><input type = "text" name = "nm" /></p>
+         <p><input type = "submit" value = "submit" /></p>
+      </form>
+   </body>
+</html>
+
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template, request, redirect, url_for
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+    
+@app.route('/login/')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/success/<name>')
+def success(name):
+    return 'welcome %s' % name
+
+
+@app.route('/auth', methods=['POST', 'GET'])
+def auth():
+    if request.method == 'POST':
+        user = request.form['nm']
+        return redirect(url_for('success', name=user))        
+    else:
+        user = request.args.get('nm')
+        return redirect(url_for('success', name=user+' by Get'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+==========================
+ Templates
+==========================
+
+# API 확인
+
+  https://flask.palletsprojects.com/en/2.0.x/tutorial/templates/
+  https://www.tutorialspoint.com/flask/flask_templates.htm
+
+  -> Line Statements
+
+     https://jinja.palletsprojects.com/en/2.11.x/templates
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │
+    ├─static
+    └─templates
+            login.html 
+            hello.html   <- 추가하세요
+            marks.html   <- 추가하세요
+            result.html  <- 추가하세요
+
+
+# 첫번째 예제
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return '<html><body><h1>Hello World</h1></body></html>'
+
+    
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 두번째 예제
+
+-----------------
+> hello.html    <
+-----------------
+
+<!doctype html>
+<html>
+  <body>
+
+    <h1>Hello {{ name }}!</h1>
+
+  </body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return '<html><body><h1>Hello World</h1></body></html>'
+
+    
+@app.route('/hello/<user>')
+def hello_name(user):
+    return render_template('hello.html', name = user)
+
+    
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 세번째 예제
+
+-----------------
+> marks.html    <
+-----------------
+
+<!doctype html>
+<html>
+  <body>
+    {% if marks > 50 %}   # fife 엔터
+    <h1> 다음 단계로 이동할 수 있음 </h1>
+    {% else %}
+    <h1> 다음 단계로 이동할 수 없음 </h1>
+    {% endif %}
+  </body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return '<html><body><h1>Hello World</h1></body></html>'
+
+
+@app.route('/hello/<user>')
+def hello_name(user):
+    return render_template('hello.html', name = user)
+
+
+@app.route('/marks/<int:score>')
+def marks(score):
+   return render_template('marks.html', marks = score)
+
+    
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 네번째 예제
+
+-----------------
+> result.html   <
+-----------------
+
+<!doctype html>
+<html>
+<body>
+  <table border=1>
+    {% for key, value in result.items() %}
+    <tr>
+      <th> {{ key }} </th>
+      <td> {{ value }} </td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return '<html><body><h1>Hello World</h1></body></html>'
+
+    
+@app.route('/result')
+def result():
+    dict = {'phy': 50, 'che': 60, 'maths': 70}
+    return render_template('result.html', result=dict)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 추가 : Template Inheritance
+  상속 자료 
+  https://frhyme.github.io/python-libs/successive_inheritance_with_jinja/
+  https://jinja.palletsprojects.com/en/2.11.x/templates/#template-inheritance
+  https://realpython.com/primer-on-jinja-templating/
+
+
+=======================
+ Static Files
+=======================
+
+# API 확인
+
+  https://www.tutorialspoint.com/flask/flask_static_files.htm
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │
+    ├─static
+    │      hello.js     <- 추가하세요
+    └─templates
+            login.html 
+            index.html   <- 추가하세요
+            hello.html 
+            marks.html 
+            result.html
+
+-----------------
+> hello.js      <
+-----------------
+
+function sayHello() {
+  alert("Hello World")
+}
+
+-----------------
+> index.html    <
+-----------------
+
+<html>
+  <head>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'hello.js') }}"></script>
+  </head>
+  <body>
+    <input type="button" onclick="sayHello()" value="Say Hello" />
+  </body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+======================================
+ Sending Form Data to Template
+======================================
+
+# API 확인
+
+  https://www.tutorialspoint.com/flask/flask_request_object.htm
+  https://www.tutorialspoint.com/flask/flask_sending_form_data_to_template.htm
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │
+    ├─static
+    │      hello.js
+    └─templates
+            index.html
+            login.html 
+            hello.html
+            marks.html
+            result.html   <- 내용 확인만 하세요
+            student.html  <- 추가하세요
+
+---------------------
+> student.html      <
+---------------------
+
+<html>
+<body>
+  <form action="http://localhost:5000/result" method="POST">
+    <p>Name      <input type="text" name="Name" /></p>
+    <p>Physics   <input type="text" name="Physics" /></p>
+    <p>Chemistry <input type="text" name="chemistry" /></p>
+    <p>Maths     <input type="text" name="Mathematics" /></p>
+    <p>          <input type="submit" value="submit" /></p>
+  </form>
+</body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, render_template, request
+app = Flask(__name__)
+
+
+@app.route('/')
+def student():
+    return render_template('student.html')
+
+
+@app.route('/result', methods=['POST', 'GET'])
+def result():
+    if request.method == 'POST':
+        result = request.form
+        return render_template("result.html", result=result)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+------------------
+> result.html    <
+------------------
+
+  ** 내용만 확인
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+==============================
+ 쿠키와 세션 비교
+==============================
+
+  https://galid1.tistory.com/502
+  https://interconnection.tistory.com/74
+
+
+====================
+ Cookies
+====================
+
+# API 확인
+
+  https://www.javatpoint.com/flask-cookies
+
+  - make_response() : https://flask.palletsprojects.com/en/2.0.x/api/#flask.make_response
+  - setCookie       : https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │
+    ├─static
+    │      hello.js
+    └─templates
+            index.html
+            login.html 
+            hello.html
+            marks.html
+            result.html  
+            student.html
+            login2.html    <- 추가하세요
+            profile.html   <- 추가하세요
+            success.html   <- 추가하세요
+
+# 첫번째 예제
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, make_response, render_template
+app = Flask(__name__)
+
+
+@app.route('/')
+def student():
+    return render_template('student.html')
+
+
+@app.route('/cookie')
+def cookie():
+    res = make_response("<h1>cookie is set</h1>")
+    res.set_cookie('foo', 'bar')
+    return res
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 두번째 예제
+
+------------------
+> login2.html    <
+------------------
+
+<html>
+<head>
+  <title>login</title>
+</head>
+<body>
+  <form method="post" action="http://localhost:5000/success">
+    <table>
+      <tr><td>Email</td><td><input type='email' name='email'></td></tr>
+      <tr><td>Password</td><td><input type='password' name='pass'></td></tr>
+      <tr><td><input type="submit" value="Submit"></td></tr>
+    </table>
+  </form>
+</body>
+</html>
+
+--------------------
+> success.html     <
+--------------------
+
+<html>
+<head>
+  <title>success</title>
+</head>
+<body>
+  <h2>Login successful</h2>
+  <a href="/profile">View Profile</a>
+</body>
+</html>
+
+--------------------
+> profile.html     <
+--------------------
+
+<html>
+<head>
+  <title>profile</title>
+</head>
+<body>
+  <h3>{{ name }}님 로그인 상태입니다</h3>
+</body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import *
+app = Flask(__name__)
+
+
+@app.route('/login2')
+def login2():
+    return render_template("login2.html")
+
+
+@app.route('/success', methods=['POST'])
+def success():
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['pass']
+
+    if password == "sa":
+        resp = make_response(render_template('success.html'))
+        resp.set_cookie('email', email)
+        return resp
+    else:
+        return redirect(url_for('error'))
+
+
+@app.route('/error')
+def error():
+    return "<p><strong>Enter correct password</strong></p>"
+
+
+@app.route('/profile')
+def profile():
+    email = request.cookies.get('email')
+    resp = make_response(render_template('profile.html', name=email))
+    return resp
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+====================
+ Sessions
+====================
+
+# API 확인
+
+  https://www.javatpoint.com/flask-cookies
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │  login.py             <- 추가하세요
+    │
+    ├─static
+    │      hello.js
+    └─templates
+            index.html
+            login.html 
+            hello.html
+            marks.html
+            result.html  
+            student.html
+            login2.html      <- 내용 확인하세요
+            success.html     <- 내용 확인하세요
+            profile.html     <- 내용 확인하세요
+
+            getsession.html  <- 추가하세요
+            home.html        <- 추가하세요
+            logout.html      <- 추가하세요
+
+
+# 첫번째 예제
+
+----------------------
+> getsession.html    <
+----------------------
+
+<html>
+<head>
+  <title>getting the session</title>
+</head>
+<body>
+  <p>The session is set with value: <strong>{{name}}</strong></p>
+</body>
+</html>
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import *
+app = Flask(__name__)
+app.secret_key = "abc"   # any random string, https://bitcodic.tistory.com/64
+
+
+@app.route('/')
+def home():
+    res = make_response(
+        "<h4>session variable is set, <a href='/get'>Get Variable</a></h4>")
+    session['response'] = 'session#1'
+    return res
+
+
+@app.route('/get')
+def getVariable():
+    if 'response' in session:
+        s = session['response']
+        return render_template('getsession.html', name=s)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+# 두번째 예제
+
+-----------------
+> home.html     <
+-----------------
+
+<html>
+<head>
+  <title>home</title>
+</head>
+<body>
+
+  <h3>Welcome to the website</h3>
+  <a href="/login">로그인</a><br>
+  <a href="/profile">프로파일 보기</a><br>
+  <a href="/logout">로그아웃</a><br>
+
+</body>
+</html>
+
+-------------------
+> logout.html     <
+-------------------
+
+<html>
+<head>
+  <title>logout</title>
+</head>
+<body>
+
+  <p>logout successful, click <a href="/login">here</a> to login again</p>
+
+</body>
+</html>
+
+-----------------
+> login.py      <
+-----------------
+
+from flask import *
+app = Flask(__name__)
+app.secret_key = "amustring"
+
+
+@app.route('/')
+def home():
+    return render_template("home.html")
+
+
+@app.route('/login')
+def login():
+    return render_template("login2.html")
+
+
+@app.route('/success', methods=["POST"])
+def success():
+    if request.method == "POST":
+        session['email'] = request.form['email']
+    return render_template('success.html')
+
+
+@app.route('/logout')
+def logout():
+    if 'email' in session:
+        session.pop('email', None)  # pop 메소드로 세션 변수 제거
+        return render_template('logout.html')
+    else:
+        return '<p>user already logged out</p>'
+
+
+@app.route('/profile')
+def profile():
+    if 'email' in session:
+        email = session['email']
+        return render_template('profile.html', name=email)
+    else:
+        return '<p>Please login first</p>'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python login.py
+
+
+=============================
+ Redirect & Errors
+=============================
+
+# API 확인
+
+  https://www.tutorialspoint.com/flask/flask_redirect_and_errors.htm
+
+-----------------
+> app.py        <
+-----------------
+
+from flask import Flask, redirect, url_for, render_template, request, abort
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    return render_template('login.html')
+
+
+@app.route('/auth', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        if request.form['nm'] == 'admin':
+            return redirect(url_for('success'))
+        else:
+            abort(401)
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/success')
+def success():
+    return 'logged in successfully'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py 
+
+
+=============================
+ Message Flashing
+=============================
+
+** flash : (불빛으로) 신호를 보내다  
+
+# API 확인
+
+  https://flask.palletsprojects.com/en/2.0.x/api/#message-flashing
+  https://pythonise.com/series/learning-flask/flask-message-flashing
+
+  - flask.flash(message, category='message')
+  - flask.get_flashed_messages(with_categories=False, category_filter=())
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │  flash.py  <- 추가하세요
+    │  login.py
+    │
+    ├─static
+    │      hello.js
+    └─templates
+            index.html
+            login.html 
+            hello.html
+            marks.html
+            result.html  
+            student.html
+            login2.html
+            profile.html
+            success.html
+            getsession.html 
+            home.html 
+            logout.html
+
+-----------------
+> login.html    <
+-----------------
+
+<!doctype html>
+<html>
+<body>
+  <h1>Login</h1>
+
+  {% if error %}
+  <p><strong>Error:</strong> {{ error }}
+  {% endif %}
+
+  <form action="http://localhost:5000/login" method="post">
+    <dl>
+      <dt>Username:</dt>
+      <dd><input type=text name=username value="{{request.form.username }}"></dd>
+      <dt>Password:</dt>
+      <dd><input type=password name=password></dd>
+    </dl>
+    <p><input type=submit value=Login></p>
+  </form>
+</body>
+</html>
+
+-----------------
+> index.html    <
+-----------------
+
+<!doctype html>
+<html>
+<head>
+  <title>플라스크 Message flashing</title>
+</head>
+<body>
+    
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  {% endwith %}
+
+  <h1>플라스크 Message Flashing 예제</h1>
+  <p>Do you want to <a href="{{ url_for('login') }}"><b>log in?</b></a></p>
+</body>
+</html>
+
+-----------------
+> flash.py      <
+-----------------
+
+from flask import Flask, flash, redirect, render_template, request, url_for
+app = Flask(__name__)
+app.secret_key = 'random string'
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or \
+           request.form['password'] != 'admin':
+            error = 'Invalid username or password. Please try again!'
+        else:
+            flash('성공적으로 로그인되었습니다!')
+            return redirect(url_for('index'))
+
+    return render_template('login.html', error=error)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python flash.py
+
+
+===========================
+ File Uploading
+===========================
+
+# API 확인
+
+  https://flask.palletsprojects.com/en/2.0.x/patterns/fileuploads/
+
+  - multipart/form-data : http://tcpschool.com/html-tag-attrs/form-enctype
+  - secure_filename     : https://frhyme.github.io/python-libs/file_upload_on_flask/#what-is-secure_filename
+
+  C:\dev64> tree FlaskIntro /F
+
+    FLASKINTRO
+    │  app.py
+    │  flash.py
+    │  login.py
+    │
+    ├─uploads   <- 폴더 추가
+    │
+    ├─static
+    │      hello.js
+    └─templates
+            index.html
+            login.html 
+            hello.html
+            marks.html
+            result.html  
+            student.html
+            login2.html
+            profile.html
+            success.html
+            getsession.html 
+            home.html 
+            logout.html
+            upload.html   <- 추가하세요
+            list.html     <- 추가하세요
+
+-----------------
+> upload.html   <
+-----------------
+
+<html>
+<body>
+  <form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <input type="submit" />
+  </form>
+</body>
+</html>
+
+---------------
+> app.py      <
+---------------
+
+from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+
+app = Flask(__name__)
+
+
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
+
+
+@app.route('/uploader', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save('C:/dev/FlaskIntro/uploads/' + secure_filename(f.filename))
+        return 'file uploaded successfully'
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+=========================
+ SQLite
+=========================
+
+----------------
+> home.html    <
+----------------
+
+<html>
+<head>
+  <title>home</title>
+</head>
+<body>
+  <h3>Welcome to the website</h3>
+  <a href="/list">학생 목록</a><br>
+  <a href="/enternew">학생 추가</a><br>
+</body>
+</html>
+
+-------------------
+> student.html    <
+-------------------
+
+<html>
+<body>
+  <form action="{{ url_for('addrec') }}" method="POST">
+    <h3>Student Information</h3>
+    Name<br><input type="text" name="nm" /></br>
+    Address<br><textarea name="add"></textarea><br>
+    City<br><input type="text" name="city" /><br>
+    PINCODE<br><input type="text" name="pin" /><br>
+    <input type="submit" value="submit" /><br>
+  </form>
+</body>
+</html>
+
+----------------
+> list.html    <
+----------------
+
+<!doctype html>
+<html>
+
+<body>
+  <table border=1>
+    <thead>
+      <td>Name</td>
+      <td>Address</td>
+      <td>city</td>
+      <td>Pincode</td>
+    </thead>
+
+    {% for row in rows %}
+    <tr>
+      <td>{{row["name"]}}</td>
+      <td>{{row["addr"]}}</td>
+      <td>{{row["city"]}}</td>
+      <td>{{row['pin']}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <a href="/">Go back to home page</a>
+</body>
+
+</html>
+
+------------------
+> result.html    <
+------------------
+
+<!doctype html>
+<html>
+<body>
+  result of addition : {{ msg }}
+  <h2><a href="\">go back to home page</a></h2>
+</body>
+</html>
+
+---------------
+> app.py      <
+---------------
+
+import sqlite3 as sql
+from flask import Flask, render_template, request
+
+conn = sql.connect('database.db')
+print("Opened database successfully")
+
+conn.execute(
+    'CREATE TABLE IF NOT EXISTS students (name TEXT, addr TEXT, city TEXT, pin TEXT)')
+print("Table created successfully")
+conn.close()
+
+''''''
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
+@app.route('/list')
+def list():
+    con = sql.connect("database.db")
+    con.row_factory = sql.Row
+
+    cur = con.cursor()
+    cur.execute("select * from students")
+
+    rows = cur.fetchall()
+    return render_template("list.html", rows=rows)
+
+
+@app.route('/enternew')
+def new_student():
+    return render_template('student.html')
+
+
+@app.route('/addrec', methods=['POST', 'GET'])
+def addrec():
+    if request.method == 'POST':
+        try:
+            name = request.form['nm']
+            addr = request.form['add']
+            city = request.form['city']
+            pin  = request.form['pin']
+
+            conn = sql.connect("database.db")       
+            cur = conn.cursor()
+            cur.execute("""INSERT INTO students(name, addr, city, pin) 
+                        VALUES(?, ?, ?, ?)""", (name, addr, city, pin))
+
+            conn.commit()
+            msg = "Record successfully added"
+        except:
+            conn.rollback()
+            msg = "error in insert operation"
+        finally:
+            return render_template("result.html", msg=msg)
+            con.close()
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+----------
+>  실행  <
+----------
+
+C:\dev\FlaskIntro> python app.py
+
+
+###########################################
+#
+# REST란? REST API란? RESTful이란?
+#
+###########################################
+
+# Architectural Styles for APIs: SOAP, REST and RPC
+
+  https://medium.com/api-university/architectural-styles-for-apis-soap-rest-and-rpc-9f040aa270fa
+
+  -> "API 관리 시장 잡아라"…글로벌 IT기업 '격돌'
+     http://m.inews24.com/v/1110800
+
+  -> '디지털 트랜스포메이션'은 정말 '기술 경쟁'일까?
+     https://mk.co.kr/premium/special-report/view/2020/02/27860/
+
+
+# 예시
+
+  https://www.nl.go.kr/kolisnet/contents/openAPI.do
+  https://developers.open-platform.or.kr/openapi/restapi
+  https://opendata.hira.or.kr/op/opc/selectOpnsApiList.do
+
+
+# 개념
+
+  https://gmlwjd9405.github.io/2018/09/21/rest-and-restful.html
+
+
+=============================
+ using only Flask
+=============================
+
+--------------
+> app.py     <
+--------------
+
+# https://www.geeksforgeeks.org/python-build-a-rest-api-using-flask/
+
+from flask import Flask, jsonify, request 
+
+app = Flask(__name__) 
+
+@app.route('/', methods = ['GET', 'POST']) 
+def home(): 
+    if(request.method == 'GET'): 
+        data = "hello world"
+        return jsonify({'data': data}) 
+
+
+@app.route('/home/<int:num>', methods = ['GET']) 
+def disp(num): 
+    return jsonify({'data': num**2}) 
+  
+  
+if __name__ == '__main__': 
+    app.run(debug = True) 
+
+
+# Test
+
+  - Web browser 활용
+
+  - requests 모듈 활용 : https://gosmcom.tistory.com/130
+
+  - client URL      : https://curl.haxx.se/
+                    : https://www.keycdn.com/support/popular-curl-examples
+
+  - httpie          : https://httpie.org/
+                    : https://devhints.io/httpie
+
+  -> curl vs HTTPie : https://daniel.haxx.se/docs/curl-vs-httpie.html
+
+
+  C:\dev\FlaskRestful> notepad test.py
+
+import requests
+r = requests.get('http://localhost:5000/home/9')
+print(r.text)
+
+  C:\dev\FlaskRestful> python test.py
+
+  C:\dev\FlaskRestful> curl -h
+  C:\dev\FlaskRestful> curl http://localhost:5000           
+  C:\dev\FlaskRestful> curl http://localhost:5000/home/7
+
+  C:\dev\FlaskRestful> pip install httpie
+  C:\dev\FlaskRestful> http --help
+  C:\dev\FlaskRestful> http    GET localhost:5000/        
+  C:\dev\FlaskRestful> http -v GET localhost:5000/        
+  C:\dev\FlaskRestful> http -v GET localhost:5000/home/7
+
+
+=============================
+ Using flask-restful
+=============================
+
+  C:\dev\FlaskRestful> pip install flask_restful
+
+
+--------------
+> app.py     <
+--------------
+
+# https://www.geeksforgeeks.org/python-build-a-rest-api-using-flask/
+
+from flask import Flask, jsonify, request 
+from flask_restful import Resource, Api 
+  
+app = Flask(__name__) 
+api = Api(app) 
+  
+# making a class for a particular resource 
+# the get, post methods correspond to get and post requests 
+# they are automatically mapped by flask_restful. 
+# other methods include put, delete, etc. 
+class Hello(Resource):   
+    def get(self):   
+        return jsonify({'message': 'hello world'}) 
+  
+    def post(self): 
+        data = request.get_json()
+        response = jsonify({'data': data})
+        response.status_code = 200 
+        return response
+
+
+class Square(Resource): 
+    def get(self, num): 
+        return jsonify({'square': num**2}) 
+  
+  
+# adding the defined resources along with their corresponding urls 
+api.add_resource(Hello, '/') 
+api.add_resource(Square, '/square/<int:num>') 
+
+ 
+# driver function 
+if __name__ == '__main__':   
+    app.run(debug = True)  
+
+
+  C:\dev\FlaskRestful> notepad test.py
+
+import requests
+r = requests.post('http://localhost:5000', data = {'key':'Korea'})
+
+  C:\dev\FlaskRestful> python test.py
+
+  C:\dev\FlaskRestful> curl http://localhost:5000           
+  C:\dev\FlaskRestful> curl http://localhost:5000/square/10
+
+  C:\dev\FlaskRestful> http -v GET localhost:5000/        
+  C:\dev\FlaskRestful> http -v GET localhost:5000/square/7
+
+
+====================================
+ Flask-RESTful API 
+====================================
+
+# Quickstart
+  
+  https://flask-restful.readthedocs.io/en/latest/quickstart.html
+
+  - A Minimal API
+  - Resourceful Routing
+  - Endpoints
+  - Argument Parsing
+  - Data Formatting
+  - Full Example
+
+# User's Guide
+
+  https://flask-restful.readthedocs.io/en/latest/index.html
+
+
+================================================
+  Creating Web APIs with Python and Flask
+================================================
+
+  https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
+
+
+====================
+ 추가 자료
+====================
+
+# The Flask Mega-Tutorial Part I: Hello, World! - miguelgrinberg.com - 
+
+  https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+
+
+# 파이썬 플라스크와 MySQL을 이용한 웹 앱 개발
+
+  Creating a Web App From Scratch Using Python Flask and MySQL
+
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-22972
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-2--cms-22999
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-3--cms-23120
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-4--cms-23187
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-5--cms-23384
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-6--cms-23402
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-7--cms-23518
+  https://code.tutsplus.com/ko/tutorials/creating-a-web-app-from-scratch-using-python-flask-and-mysql-part-8--cms-23593
+
+  cf.원문
+
+     https://code.tutsplus.com/series/creating-a-web-app-from-scratch-using-python-flask-and-mysql--cms-827
+
+  C:\Users\User> cd \ipa\python\FlaskApp
+
+
+# 1
+
+  # 데이터베이스 생성 및 유저 관리 테이블 생성
+
+  C:\dev64\flaskapp> mysql -u orange -p
+
+  drop database if exists bucketlist;
+
+  create database bucketlist;
+
+  use bucketlist;
+  
+  create table bucketlist.tbl_user (
+  user_id bigint not null auto_increment,
+  user_name varchar(45) null,
+  user_username varchar(45) null,
+  user_password varchar(100) null,
+  primary key (user_id));
+
+  # 유저를 추가하는 저장 프로시져
+
+  delimiter $$
+
+  create procedure sp_createuser(
+    in p_name varchar(20),
+    in p_username varchar(45),
+    in p_password varchar(100)
+  )
+  begin
+    if ( select exists (select 1 from tbl_user where user_username = p_username) ) then
+        select 'Username Exists !!';
+    else
+        insert into tbl_user
+        (
+            user_name,
+            user_username,
+            user_password
+        )
+        values
+        (
+            p_name,
+            p_username,
+            p_password
+        );
+    end if;
+  end$$
+
+  delimiter ;
+
+  show tables;
+
+  show procedure status like 'sp%';
+
+  show create procedure sp_createuser \G
+
+  select * from tbl_user;  
+
+  exit
+
+# 2
+
+  C:\dev64\flaskapp> mysql -D bucketlist -u orange -p
+
+  delimiter $$
+
+  create procedure sp_validatelogin(
+  in p_username varchar(20)
+    )
+  begin
+    select * from tbl_user
+    where user_username = p_username;
+  end$$
+
+  delimiter ;
+
+  show tables;
+
+  show procedure status like 'sp%';
+  
+# 3
+
+  C:\dev64\flaskapp> mysql -d bucketlist -u orange -p
+
+  # 버킷 리스트에 항목을 보관하는 tbl_wish 테이블
+
+  use bucketlist;
+
+  drop table tbl_wish;
+  
+  create table tbl_wish (
+  wish_id int(11) not null auto_increment,
+  wish_title varchar(45) default null,
+  wish_description varchar(5000) default null,
+  wish_user_id int(11) default null,
+  wish_date datetime default null,
+  primary key (wish_id)
+  ) engine=innodb auto_increment=3 default charset=utf8;
+
+  # tbl_wish 테이블에 항목을 추가하는 저장 프로시저
+
+  use bucketlist;
+
+  drop procedure if exists bucketlist.sp_addwish;
+ 
+  delimiter $$
+
+  create procedure sp_addwish(
+    in p_title varchar(45),
+    in p_description varchar(1000),
+    in p_user_id bigint
+  )
+  begin
+    insert into tbl_wish(
+        wish_title,
+        wish_description,
+        wish_user_id,
+        wish_date
+    )
+    values
+    (
+        p_title,
+        p_description,
+        p_user_id,
+        now()
+    );
+  end$$
+
+  delimiter ;
+  
+  # 희망사항을 조회하는 저장 프로시저 작성
+
+  use bucketlist;
+
+  drop procedure if exists sp_getwishbyuser;
+ 
+  delimiter $$
+
+  create procedure sp_getwishbyuser (
+  in p_user_id bigint
+  )
+  begin
+    select * from tbl_wish where wish_user_id = p_user_id;
+  end$$
+ 
+  delimiter ;
+ 
+  show tables;
+  
+  show procedure status like 'sp%';
+
+# 4
+
+  C:\dev64\flaskapp> mysql -d bucketlist -u orange -p
+
+  #  wish id와 user id를 이용해 특정 희망사항 정보를 구하는 저장 프로시저
+
+  use bucketlist;
+
+  delimiter $$
+
+  create procedure sp_getwishbyid(
+  in p_wish_id bigint,
+  in p_user_id bigint
+  )
+  begin
+    select * from tbl_wish 
+     where wish_id = p_wish_id 
+       and wish_user_id = p_user_id;
+  end$$
+
+  delimiter ;
+  
+  # 희망사항을 수정하는 저장 프로시저
+
+  delimiter $$
+
+  create  procedure sp_updatewish(
+  in p_title varchar(45),
+  in p_description varchar(1000),
+  in p_wish_id bigint,
+  in p_user_id bigint
+  )
+  begin
+    update tbl_wish 
+       set wish_title = p_title,
+           wish_description = p_description
+     where wish_id = p_wish_id 
+       and wish_user_id = p_user_id;
+  end$$
+
+  delimiter ;
+
+  # 희망사항을 삭제하는 저장 프로시저
+
+  delimiter $$
+
+  create procedure sp_deletewish (
+  in p_wish_id bigint,
+  in p_user_id bigint
+  )
+  begin
+    delete from tbl_wish 
+     where wish_id = p_wish_id 
+       and wish_user_id = p_user_id;
+  end$$
+ 
+  delimiter ;
+
+
+====================
+ Q&A
+====================
+
+# Why does the logo of Bottle (web framework) look like Flask (Python framework)? Why does the logo of Flask (Python framework) not look like a flask?
+
+  https://www.quora.com/Why-does-the-logo-of-Bottle-web-framework-look-like-Flask-Python-framework-Why-does-the-logo-of-Flask-Python-framework-not-look-like-a-flask
+
+# port 80 사용하기
+
+  if __name__ == '__main__':
+      app.run(host='0.0.0.0', debug=True, port=80)
+
+  혹시 80 포트가 사용중이면 
+  아래 명령으로 80 포트 사용중인 프로세스의 PID 확인한 뒤
+
+    C:\dev64> netstat -ao
+
+  작업 관리자를 열고 -> 메뉴 -> 보기 -> 열 선택 -> PID(프로세스 식별자) 선택한 뒤
+  80 포트를 사용하는 프로세스를 선택하고 끝내기할 것
+   
+
+# How to use Flask url_for in a CSS file?
+
+  ** https://www.python2.net/questions-707340.htm
+
+  1.html 문서에 경로를 넣을 때는 이렇게
+
+    .bgimg-1 {
+       background-image: url("{{ url_for('static', filename='images/planets.jpeg' ) }}");
+       min-height: 100%; 
+     }
+
+     {{ url_for('함수명') }}
+
+     {{ url_for('static', filename='css/my.css') }}
+
+  2.css 파일에 넣을 때는 
+
+    background-image: url('/static/path/to/background.jpg');
+
+
+# 웹 프로토타입
+
+  https://yslab.kr/13
+  https://yslab.kr/74
+  ...
+
+
+# flask에서 image 사용하기
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Double A</title>
+  </head>
+  <body>
+    <img src="{{ url_for('static', filename='img/nature.jpg') }}" alt="Italian Trulli">
+  </body>
+  </html>
+
+
+# Template Inheritance
+
+  https://flask.palletsprojects.com/en/2.0.x/patterns/templateinheritance/
+
+  -> Child Template에서 {{ super() }}를 이용해서 스타일을 상속받은 것에 주목
+
+	
+
+
+
+
