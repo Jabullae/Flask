@@ -964,7 +964,7 @@ def home():
     return render_template("home.html")
 
 
-@app.route('/login')
+@app.route('/login/')
 def login():
     return render_template("login2.html")
 
@@ -1098,7 +1098,7 @@ C:\dev\FlaskIntro> python app.py
   <h1>Login</h1>
 
   {% if error %}
-  <p><strong>Error:</strong> {{ error }}
+  <p><strong>Error:</strong> {{ error }}</p>
   {% endif %}
 
   <form action="http://localhost:5000/login" method="post">
